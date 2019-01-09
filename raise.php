@@ -4,18 +4,21 @@ $salary = preg_replace("/[^0-9\-\.]/", "", $_POST["salary"]);
 $desired = preg_replace("/[^0-9\-\.]/", "", $_POST["desired"]);
 $raise = preg_replace("/[^0-9\-\.]/", "", $_POST["raise"])/100;
 
+$currentInflationRate = .022; // For the current year. (0.022 = 2.2% rate for 2018, for example)
+$currentInflaitonYear = 2018;
+
 if ($salary>0) {
 	$raiseWithoutTaxesInflate = '$' . number_format($salary*$raise,2);
-	$raiseWithoutTaxes = '$' . number_format($salary*($raise-.0207),2);
-	$raiseAmount = '$' . number_format(($salary*($raise-.0207))-($salary*($raise-.0207)*.21),2);
-	$raiseAmountWeek = '$' . number_format((($salary*($raise-.0207))-($salary*($raise-.0207)*.21))/52,2);
+	$raiseWithoutTaxes = '$' . number_format($salary*($raise-$currentInflationRate),2);
+	$raiseAmount = '$' . number_format(($salary*($raise-$currentInflationRate))-($salary*($raise-$currentInflationRate)*.21),2);
+	$raiseAmountWeek = '$' . number_format((($salary*($raise-$currentInflationRate))-($salary*($raise-$currentInflationRate)*.21))/52,2);
 
 	$hourly = (($salary*$raise)+$salary)/2000;
 	$desiredHourly = $desired/2000;
 
 	$rate = 8- ($hourly/$desiredHourly * 8);
 
-	$etc = "Before taxes and inflation, you would make $raiseWithoutTaxesInflate more a year. In the real world, inflation is 2.07% for 2016, making your " . ($raise*100) . "% raise actually " . (($raise*100)-2.07) . "%, or only $raiseWithoutTaxes.<br><br>But, being a red-blooded American, you also pay around 21% in taxes, healthcare, etc. So, $raiseAmount is what you're seeing a year -- or $raiseAmountWeek each week.";
+	$etc = "Before taxes and inflation, you would make $raiseWithoutTaxesInflate more a year. In the real world, inflation is " . ($currentInflationRate*100) . "% for $currentInflaitonYear, making your " . ($raise*100) . "% raise actually " . (($raise*100)-2.07) . "%, or only $raiseWithoutTaxes.<br><br>But, being a red-blooded American, you also pay around 21% in taxes, healthcare, etc. So, $raiseAmount is what you're seeing a year -- or $raiseAmountWeek each week.";
 
 	if ($desired>$salary) {
 		$etc2 = "Well, you don't think you're paid enough! Ok... If you work 40 hours a week, and have two weeks vacation a year, you work 2,000 hours a year. This means you make around $" . number_format($hourly,2) . " an hour. You want to make $" . number_format($desired/2000,2) . " an hour. To be paid that amount at your current rate, you must poop for " . number_format($rate,2) . " hours a day.";
