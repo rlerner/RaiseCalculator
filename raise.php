@@ -52,7 +52,7 @@ if ($salary>0) {
 							</tr>
 							<tr>
 								<td>Your Raise</td>
-								<td><input type="text" name="raise" placeholder="2.91%" value="<?=number_format($raise*100,2)?>" class="form-control"></td>
+								<td><input type="text" name="raise" placeholder="2.91%" value="<?=($raise>0?number_format($raise*100,2):"")?>" class="form-control"></td>
 							</tr>
 							<tr>
 								<td>Desired Salary</td>
